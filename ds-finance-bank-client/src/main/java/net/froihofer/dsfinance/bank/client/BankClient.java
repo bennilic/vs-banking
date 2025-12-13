@@ -27,7 +27,9 @@ public class BankClient {
    */
   private void getRmiProxy() {
     AuthCallbackHandler.setUsername("customer");
+    //AuthCallbackHandler.setUsername("csdc26bb_03");
     AuthCallbackHandler.setPassword("customerpass");
+    //AuthCallbackHandler.setPassword("Voak5eesei");
     Properties props = new Properties();
     props.put(Context.SECURITY_PRINCIPAL,AuthCallbackHandler.getUsername());
     props.put(Context.SECURITY_CREDENTIALS,AuthCallbackHandler.getPassword());
