@@ -10,7 +10,7 @@ import net.froihofer.dsfinance.ws.trading.api.TradingWebService;
 @Stateless
 public class TradingWebserviceProvider {
 
-    //@Inject
+    @Inject
     private TradingWebServiceService tradingWebServiceService;
 
     @RolesAllowed({"employee", "customer"})
