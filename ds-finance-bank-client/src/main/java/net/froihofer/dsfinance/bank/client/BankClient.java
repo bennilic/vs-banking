@@ -1,9 +1,13 @@
 package net.froihofer.dsfinance.bank.client;
 
+import java.util.List;
 import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import api.TradingService;
+import dto.StockDTO;
 import net.froihofer.util.AuthCallbackHandler;
 import net.froihofer.util.WildflyJndiLookupHelper;
 import org.slf4j.Logger;
@@ -15,6 +19,8 @@ import org.slf4j.LoggerFactory;
  */
 public class BankClient {
   private static Logger log = LoggerFactory.getLogger(BankClient.class);
+  
+  private TradingService tradingService;
 
   /**
    * Skeleton method for performing an RMI lookup
@@ -27,6 +33,7 @@ public class BankClient {
     props.put(Context.SECURITY_CREDENTIALS,AuthCallbackHandler.getPassword());
     try {
       WildflyJndiLookupHelper jndiHelper = new WildflyJndiLookupHelper(new InitialContext(props), "ds-finance-bank-ear", "ds-finance-bank-ejb", "");
+        tradingService = jndiHelper.lookup("TradingService", TradingService.class);
       //TODO: Lookup the proxy and assign it to some variable or return it by changing the
       //      return type of this method
     }
@@ -37,6 +44,14 @@ public class BankClient {
 
   private void run() {
     //TODO implement the client part
+      getRmiProxy();
+
+      List<StockDTO> stocks = tradingService.searchStocks("Apple");
+
+      for (StockDTO stock : stocks) {
+            System.out.println("Found stock: " + stock);
+      }
+
   }
 
   public static void main(String[] args) {
