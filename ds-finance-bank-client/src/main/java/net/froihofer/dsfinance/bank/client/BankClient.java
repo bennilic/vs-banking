@@ -51,7 +51,7 @@ public class BankClient {
       List<StockDTO> stocks = tradingService.searchStocks("Apple");
 
       for (StockDTO stock : stocks) {
-            System.out.println("Found stock: " + stock);
+            System.out.println("Found stock: " + stock.getSymbol());
       }
 
   }
