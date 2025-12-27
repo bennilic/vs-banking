@@ -51,13 +51,7 @@ public class BankClient {
   private void run() {
     //TODO implement the client part
       getRmiProxy();
-
-      List<StockDTO> stocks = tradingService.searchStocks("Apple");
-
-      for (StockDTO stock : stocks) {
-            System.out.println("Found stock: " + stock.getSymbol());
-      }
-
+      menu();
   }
 
   public static void main(String[] args) {
@@ -65,7 +59,15 @@ public class BankClient {
     client.run();
   }
 
-  public static void menu() {
+  void search4Stocks(String stockName){
+    List<StockDTO> stocks = tradingService.searchStocks(stockName);
+
+    for (StockDTO stock : stocks) {
+      System.out.println("Found stock: " + stock.getSymbol());
+    }
+  }
+
+  public void menu() {
     Scanner sc = new Scanner(System.in);
     boolean running = true;
 
@@ -82,8 +84,7 @@ public class BankClient {
           System.out.print("Geben Sie den Namen der Aktie ein: ");
           String aktienName = sc.nextLine(); // Nutze den Scanner 'sc'
           System.out.println("Suche nach Aktien mit dem Namen: " + aktienName);
-          System.out.println("Gefundene Aktien:");
-          //search4Stock(aktienName);
+          search4Stocks(aktienName);
           break;
         case "0":
           System.out.println("Programm beendet.");
@@ -95,4 +96,6 @@ public class BankClient {
       }
     }
   }
+
+
 }
