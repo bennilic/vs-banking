@@ -2,6 +2,7 @@ package net.froihofer.dsfinance.bank.client;
 
 import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -26,6 +27,9 @@ public class BankClient {
    * Skeleton method for performing an RMI lookup
    */
   private void getRmiProxy() {
+
+    //AuthCallbackHandler.setUsername("csdc26bb_03");
+
     AuthCallbackHandler.setUsername("customer");
     //AuthCallbackHandler.setUsername("csdc26bb_03");
     AuthCallbackHandler.setPassword("customerpass");
@@ -59,5 +63,36 @@ public class BankClient {
   public static void main(String[] args) {
     BankClient client = new BankClient();
     client.run();
+  }
+
+  public static void menu() {
+    Scanner sc = new Scanner(System.in);
+    boolean running = true;
+
+    while (running) {
+      System.out.println("\n--- Menü ---");
+      System.out.println("[1] - Suchen nach verfügbaren Aktien");
+      System.out.println("[0] - Beenden");
+      System.out.print("Option auswählen: ");
+
+      String eingabe = sc.nextLine(); // Nutze String für mehr Stabilität
+
+      switch (eingabe) {
+        case "1":
+          System.out.print("Geben Sie den Namen der Aktie ein: ");
+          String aktienName = sc.nextLine(); // Nutze den Scanner 'sc'
+          System.out.println("Suche nach Aktien mit dem Namen: " + aktienName);
+          System.out.println("Gefundene Aktien:");
+          //search4Stock(aktienName);
+          break;
+        case "0":
+          System.out.println("Programm beendet.");
+          running = false;
+          break;
+        default:
+          System.out.println("Ungültige Option!");
+          break;
+      }
+    }
   }
 }
