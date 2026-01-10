@@ -1,0 +1,68 @@
+package net.froihofer.service;
+
+import api.CustomerService;
+import dto.CustomerDTO;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.Remote;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import net.froihofer.dao.UserDAO;
+import net.froihofer.entity.Customer;
+import net.froihofer.util.SessionUtils;
+import net.froihofer.util.jboss.WildflyAuthDBHelper;
+import org.apache.commons.lang3.NotImplementedException;
+
+import java.util.List;
+
+@Remote
+@Stateless(name = "CustomerService")
+public class CustomerServiceImpl implements CustomerService {
+
+    @Inject
+    UserDAO userDao;
+
+    @Inject
+    WildflyAuthDBHelper wildflyAuthDBHelper;
+
+    @Inject
+    SessionUtils sessionUtils;
+
+    @RolesAllowed("employee")
+    public void createCustomer(CustomerDTO customer){
+        if (!sessionUtils.isEmployee()) {
+            throw new SecurityException("This action is permitted only to employees!");
+        }
+
+        String firstName = customer.getFirstName();
+        String lastName = customer.getLastName();
+        String username = customer.getUserName();
+        String password = customer.getPassword();
+        String address = customer.getAddress();
+
+        Customer c = new Customer(
+                firstName,
+                lastName,
+                username,
+                password,
+                address
+        );
+
+        userDao.persist(c);
+
+        try {
+            wildflyAuthDBHelper.addUser(username, password, new String[]{"customer"});
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to add customer to Wildfly DB", e);
+        }
+    }
+
+    @Override
+    public CustomerDTO findCustomer(long customerId) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public List<CustomerDTO> findCustomer(String query) {
+        throw new NotImplementedException();
+    }
+}

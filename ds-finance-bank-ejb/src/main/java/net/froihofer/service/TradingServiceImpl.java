@@ -27,7 +27,7 @@ public class TradingServiceImpl implements TradingService {
     StockHoldingDAO stockHoldingDAO;
 
     @Override
-    @RolesAllowed({"customer"})
+    @RolesAllowed({"customer", "employee"})
     public List<StockDTO> searchStocks(String companyName) {
         System.out.println("Test");
 
