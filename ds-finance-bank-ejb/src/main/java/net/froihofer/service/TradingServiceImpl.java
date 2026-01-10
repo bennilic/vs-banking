@@ -35,7 +35,7 @@ public class TradingServiceImpl implements TradingService {
         TradingWebService tradingWebService = tradingWebserviceProvider.getTradingWebService();
         try {
             // Gets stock in the default structure from the stock exchange web service
-            List<PublicStockQuote> stocks = tradingWebService.findStockQuotesByCompanyName("Apple");
+            List<PublicStockQuote> stocks = tradingWebService.findStockQuotesByCompanyName(companyName);
 
             // Creates an empty stock list, that is later send back to the client
             List<StockDTO> stockDTOList = new ArrayList<>();
