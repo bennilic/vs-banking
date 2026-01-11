@@ -12,6 +12,7 @@ import net.froihofer.dsfinance.ws.trading.api.TradingWSException_Exception;
 import net.froihofer.dsfinance.ws.trading.api.TradingWebService;
 import net.froihofer.entity.StockHolding;
 import net.froihofer.util.TradingWebserviceProvider;
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,5 +63,15 @@ public class TradingServiceImpl implements TradingService {
             throw new RuntimeException(e);
         }
         return List.of();
+    }
+
+    @Override
+    public StockDTO buyStock(String symbol, int quantity) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public StockDTO sellStock(String symbol, int quantity) {
+        throw new NotImplementedException();
     }
 }

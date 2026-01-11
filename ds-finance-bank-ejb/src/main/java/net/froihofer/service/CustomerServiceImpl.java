@@ -28,11 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
     SessionUtils sessionUtils;
 
     @RolesAllowed("employee")
-    public void createCustomer(CustomerDTO customer){
-        if (!sessionUtils.isEmployee()) {
-            throw new SecurityException("This action is permitted only to employees!");
-        }
-
+    public void createCustomer(CustomerDTO customer) {
         String firstName = customer.getFirstName();
         String lastName = customer.getLastName();
         String username = customer.getUserName();
@@ -64,5 +60,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<CustomerDTO> findCustomer(String query) {
         throw new NotImplementedException();
+    }
+
+    @Override
+    @RolesAllowed({"employee", "customer"})
+    public boolean isEmployee() {
+        return sessionUtils.isEmployee();
     }
 }
