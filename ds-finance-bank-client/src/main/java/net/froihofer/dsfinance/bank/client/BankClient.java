@@ -15,6 +15,7 @@ import dto.CustomerDTO;
 import dto.StockDTO;
 import net.froihofer.util.AuthCallbackHandler;
 import net.froihofer.util.WildflyJndiLookupHelper;
+import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,6 +84,9 @@ public class BankClient {
             System.out.println("--- Choose one of the following options. ---");
             System.out.println("[0] Close the application.");
             System.out.println("[1] Search for stocks.");
+            System.out.println("[2] Buy stocks."); // TODO: Need implementation
+            System.out.println("[3] Sell stocks."); // TODO: Need implementation
+            System.out.println("[4] List Portfolio."); // TODO: Need implementation
 
             String input = sc.nextLine();
 
@@ -97,6 +101,12 @@ public class BankClient {
                     System.out.println("Searching for a stock with the name: " + stockName);
                     search4Stocks(stockName);
                     break;
+                case "2":
+                    throw new NotImplementedException();
+                case "3":
+                    throw new NotImplementedException();
+                case "4":
+                    throw new NotImplementedException();
                 default:
                     System.out.println("Invalid option. Please try again.");
                     break;
@@ -115,6 +125,10 @@ public class BankClient {
             System.out.println("[1] Search for stocks.");
             System.out.println("[2] Create a new customer.");
             System.out.println("[3] Show investable volume of the bank.");
+            System.out.println("[4] Buy stocks for Customer."); // TODO: Need implementation
+            System.out.println("[5] Sell stocks for Customer."); // TODO: Need implementation
+            System.out.println("[6] Search for Customer."); // TODO: Need implementation
+            System.out.println("[7] List Customer Portfolio."); // TODO: Need implementation
 
             String input = sc.nextLine();
 
@@ -162,6 +176,14 @@ public class BankClient {
 
                     System.out.println("The investable volume of the bank is: " + investibleVolume);
                     break;
+                case "4":
+                    throw new NotImplementedException();
+                case "5":
+                    throw new NotImplementedException();
+                case "6":
+                    throw new NotImplementedException();
+                case "7":
+                    throw new NotImplementedException();
                 default:
                     System.out.println("Invalid option. Please try again.");
                     break;
