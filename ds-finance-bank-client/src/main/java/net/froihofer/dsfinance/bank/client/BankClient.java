@@ -181,25 +181,7 @@ public class BankClient {
                 case "5":
                     throw new NotImplementedException();
                 case "6":
-                    System.out.println("[1] - Search for Customer Name: ");
-                    System.out.println("[2] - Search for Customer by id: ");
-                    int select;
-                    String customerInput = sc.nextLine();
-                    switch(customerInput){
-                        case "1":
-                            System.out.println("Customer Name: ");
-                            String name = sc.nextLine();
-                            findCustomerName(name);
-                        case "2":
-                            System.out.println("Customer Id: ");
-                            Scanner scid = new Scanner(System.in);
-                            Long id = scid.nextLong();
-                            findCustomerId(id);
-                        default:
-                            System.out.println("Wrong input");
-
-
-                    }
+                    customerSearchMenu();
                     break;
                     // throw new NotImplementedException();
                 case "7":
@@ -219,6 +201,28 @@ public class BankClient {
         }
     }
 
+    private void customerSearchMenu(){
+        System.out.println("[1] - Search for Customer Name: ");
+        System.out.println("[2] - Search for Customer by id: ");
+        Scanner sc = new Scanner(System.in);
+        String select = sc.nextLine();
+        switch(select){
+            case "1":
+                System.out.println("Customer Name: ");
+                String name = sc.nextLine();
+                findCustomerName(name);
+            case "2":
+                System.out.println("Customer Id: ");
+                Scanner scid = new Scanner(System.in);
+                Long id = scid.nextLong();
+                findCustomerId(id);
+            default:
+                System.out.println("Wrong input");
+
+
+        }
+    }
+
     private void findCustomerName(String name) {
       /*  List<CustomerDTO> searchResult = CustomerService.findCustomer(name);
         if (searchResult.isEmpty()) {
@@ -232,13 +236,22 @@ public class BankClient {
         try{
             CustomerDTO custom = customerService.findCustomer(id);
             if(custom == null){
-                System.err.println("Customer with ID: " + id + " not found.");
+                errorCustomerId(id);
             } else {
-                System.out.println("Gibt daten!");
+                System.out.println("Found: ");
+                System.out.println(showCustomerDetails(custom));
             }
 
       }catch (Exception e) {
-            System.err.println("Customer with ID: " + id + " not found.dfdfdf");
+            errorCustomerId(id);
         }
+    }
+
+    private String showCustomerDetails(CustomerDTO customer){
+        String output = String.format("ID: %s, Username: %s, Lastname: %s, Firstname: %s", customer.getId(), customer.getUserName(), customer.getLastName(), customer.getFirstName());
+        return output;
+    }
+    private void errorCustomerId(long id){
+        System.err.println("Customer with ID: " + id + " not found.");
     }
 }
