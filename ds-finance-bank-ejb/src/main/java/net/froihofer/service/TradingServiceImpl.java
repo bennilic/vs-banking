@@ -43,7 +43,6 @@ public class TradingServiceImpl implements TradingService {
     @Override
     @RolesAllowed({"customer", "employee"})
     public List<StockDTO> searchStocks(String companyName) {
-        // TODO Remove Storing stocks in the database, only return to client
         // Request to stock exchange web service
         TradingWebService tradingWebService = tradingWebserviceProvider.getTradingWebService();
         try {
@@ -54,19 +53,10 @@ public class TradingServiceImpl implements TradingService {
             List<StockDTO> stockDTOList = new ArrayList<>();
 
             for (PublicStockQuote stock : stocks) {
-                System.out.println("Storing stock: " + stock.getCompanyName() + " (" + stock.getSymbol() + ")");
-
-                // Mapping from Froihofers stock structure to our own stock structure for the database.
-                StockHolding stockHolding = new StockHolding();
-                stockHolding.setSymbol(stock.getSymbol());
-
                 // Mapping from Froihofers stock structure to our own stock structure for the client.
                 StockDTO stockDTO = new StockDTO();
                 stockDTO.setSymbol(stock.getSymbol());
                 stockDTOList.add(stockDTO);
-
-                // Save the stocks in the database
-                portfolioDAO.persist(stockHolding);
 
                 // Return the list of stocks to the client
                 return stockDTOList;
