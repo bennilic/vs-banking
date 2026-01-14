@@ -181,7 +181,27 @@ public class BankClient {
                 case "5":
                     throw new NotImplementedException();
                 case "6":
-                    throw new NotImplementedException();
+                    System.out.println("[1] - Search for Customer Name: ");
+                    System.out.println("[2] - Search for Customer by id: ");
+                    int select;
+                    String customerInput = sc.nextLine();
+                    switch(customerInput){
+                        case "1":
+                            System.out.println("Customer Name: ");
+                            String name = sc.nextLine();
+                            findCustomerName(name);
+                        case "2":
+                            System.out.println("Customer Id: ");
+                            Scanner scid = new Scanner(System.in);
+                            Long id = scid.nextLong();
+                            findCustomerId(id);
+                        default:
+                            System.out.println("Wrong input");
+
+
+                    }
+                    break;
+                    // throw new NotImplementedException();
                 case "7":
                     throw new NotImplementedException();
                 default:
@@ -196,6 +216,29 @@ public class BankClient {
 
         for (StockDTO stock : stocks) {
             System.out.println("Found stock: " + stock.getSymbol());
+        }
+    }
+
+    private void findCustomerName(String name) {
+      /*  List<CustomerDTO> searchResult = CustomerService.findCustomer(name);
+        if (searchResult.isEmpty()) {
+            System.out.println("No customers found with the name: " + name);
+        } else {
+          //  searchResult.forEach(BankClient::printCustomerDetails);
+        }*/
+    }
+
+    private void findCustomerId(long id){
+        try{
+            CustomerDTO custom = customerService.findCustomer(id);
+            if(custom == null){
+                System.err.println("Customer with ID: " + id + " not found.");
+            } else {
+                System.out.println("Gibt daten!");
+            }
+
+      }catch (Exception e) {
+            System.err.println("Customer with ID: " + id + " not found.dfdfdf");
         }
     }
 }

@@ -42,4 +42,10 @@ public abstract class User implements Serializable {
         this.userName = userName;
         this.password = password;
     }
+
+    public Long getId(){return id;}
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+    public String getUsername() { return userName; }
+
 }
