@@ -183,7 +183,6 @@ public class BankClient {
                 case "6":
                     customerSearchMenu();
                     break;
-                    // throw new NotImplementedException();
                 case "7":
                     throw new NotImplementedException();
                 default:
@@ -202,24 +201,30 @@ public class BankClient {
     }
 
     private void customerSearchMenu(){
+        System.out.println("\n\n[0] - Return to previous Page");
         System.out.println("[1] - Search for Customer Name: ");
-        System.out.println("[2] - Search for Customer by id: ");
+        System.out.println("[2] - Search for Customer by ID: ");
         Scanner sc = new Scanner(System.in);
         String select = sc.nextLine();
+        System.out.println("Search for: ");
         switch(select){
+            case "0":
+                break;
             case "1":
                 System.out.println("Customer Name: ");
                 String name = sc.nextLine();
                 findCustomerName(name);
             case "2":
-                System.out.println("Customer Id: ");
+                System.out.println("Customer ID: ");
                 Scanner scid = new Scanner(System.in);
                 Long id = scid.nextLong();
+                String RuntimeBreak = scid.nextLine();
                 findCustomerId(id);
+                System.out.println("Press Enter to continue...");
+                String continueafterEnter = scid.nextLine();
+                break;
             default:
                 System.out.println("Wrong input");
-
-
         }
     }
 
