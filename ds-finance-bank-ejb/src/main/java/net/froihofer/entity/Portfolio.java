@@ -11,19 +11,8 @@ public class Portfolio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private Customer customer;
-
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<StockHolding> stockHoldings;
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
 
     public List<StockHolding> getStockHoldings() {
         return stockHoldings;
@@ -31,5 +20,9 @@ public class Portfolio {
 
     public void setStockHoldings(List<StockHolding> stockHoldings) {
         this.stockHoldings = stockHoldings;
+    }
+
+    public void addStockHolding(StockHolding stockHolding) {
+        this.stockHoldings.add(stockHolding);
     }
 }

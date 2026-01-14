@@ -6,7 +6,9 @@ import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "userName")
+})
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class User implements Serializable {
 

@@ -2,6 +2,8 @@ package net.froihofer.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table
 public class Bank {
@@ -11,13 +13,13 @@ public class Bank {
     private Long id;
 
     @Column
-    private Long investableVolume;
+    private BigDecimal investableVolume;
 
-    public Long getInvestableVolume() {
+    public BigDecimal getInvestableVolume() {
         return investableVolume;
     }
 
-    public void setInvestableVolume(Long investableVolume) {
+    public void setInvestableVolume(BigDecimal investableVolume) {
         this.investableVolume = investableVolume;
     }
 }

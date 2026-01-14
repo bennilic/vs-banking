@@ -1,5 +1,6 @@
 package net.froihofer.dsfinance.bank.client;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
@@ -38,11 +39,11 @@ public class BankClient {
      * Skeleton method for performing an RMI lookup
      */
     private void getRmiProxy() {
-        //AuthCallbackHandler.setUsername("customer");
-        //AuthCallbackHandler.setPassword("customerpass");
+        AuthCallbackHandler.setUsername("default-c");
+        AuthCallbackHandler.setPassword("super-secure");
 
-        AuthCallbackHandler.setUsername("employee");
-        AuthCallbackHandler.setPassword("employeepass");
+//        AuthCallbackHandler.setUsername("default-e");
+//        AuthCallbackHandler.setPassword("super-secure");
 
         Properties props = new Properties();
         props.put(Context.SECURITY_PRINCIPAL, AuthCallbackHandler.getUsername());
@@ -76,6 +77,7 @@ public class BankClient {
     }
 
     private void showCustomerMenu() {
+        System.out.println();
         System.out.println("You are logged in as Customer.");
 
         Scanner sc = new Scanner(System.in);
@@ -84,7 +86,7 @@ public class BankClient {
             System.out.println("--- Choose one of the following options. ---");
             System.out.println("[0] Close the application.");
             System.out.println("[1] Search for stocks.");
-            System.out.println("[2] Buy stocks."); // TODO: Need implementation
+            System.out.println("[2] Buy stocks.");
             System.out.println("[3] Sell stocks."); // TODO: Need implementation
             System.out.println("[4] List Portfolio."); // TODO: Need implementation
 
@@ -96,13 +98,22 @@ public class BankClient {
                     return;
                 case "1":
                     System.out.print("Enter a stock name:");
-                    String stockName = sc.nextLine();
+                    String stockNameSearch = sc.nextLine();
 
-                    System.out.println("Searching for a stock with the name: " + stockName);
-                    search4Stocks(stockName);
+                    System.out.println("Searching for a stock with the name: " + stockNameSearch);
+                    search4Stocks(stockNameSearch);
                     break;
                 case "2":
-                    throw new NotImplementedException();
+                    System.out.print("Enter a stock name:");
+                    String stockNamePurchase = sc.nextLine();
+
+                    System.out.print("Enter a quantity to buy:");
+                    int stockQuantity = Integer.parseInt(sc.nextLine());
+
+                    BigDecimal purchaseValue = tradingService.buyStock(stockNamePurchase, stockQuantity);
+
+                    System.out.println("Purchased " + stockQuantity + " of stock " + stockNamePurchase + " for a value of " + purchaseValue +  " per stock.");
+                    break;
                 case "3":
                     throw new NotImplementedException();
                 case "4":
@@ -172,7 +183,7 @@ public class BankClient {
                     System.out.println("Customer created successfully.");
                     break;
                 case "3":
-                    long investibleVolume = bankService.getInvestableVolume();
+                    BigDecimal investibleVolume = bankService.getInvestableVolume();
 
                     System.out.println("The investable volume of the bank is: " + investibleVolume);
                     break;

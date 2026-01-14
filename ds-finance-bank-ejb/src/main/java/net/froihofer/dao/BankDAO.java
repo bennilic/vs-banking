@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import net.froihofer.entity.Bank;
 
-public class BankDao {
+public class BankDAO {
     @PersistenceContext(unitName = "ds-finance-bank-ref-persunit")
     private EntityManager entityManager;
 

@@ -2,6 +2,8 @@ package api;
 
 import jakarta.ejb.Remote;
 
+import java.math.BigDecimal;
+
 public interface BankService {
-    Long getInvestableVolume();
+    BigDecimal getInvestableVolume();
 }

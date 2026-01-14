@@ -5,19 +5,21 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Remote;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import net.froihofer.dao.BankDao;
+import net.froihofer.dao.BankDAO;
 import net.froihofer.entity.Bank;
+
+import java.math.BigDecimal;
 
 @Remote
 @Stateless(name = "BankService")
 public class BankServiceImpl implements BankService {
 
     @Inject
-    private BankDao bankDAO;
+    private BankDAO bankDAO;
 
     @Override
     @RolesAllowed("employee")
-    public Long getInvestableVolume() {
+    public BigDecimal getInvestableVolume() {
         Bank bank = bankDAO.findById(1);
         return bank.getInvestableVolume();
     }
