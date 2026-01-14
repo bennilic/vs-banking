@@ -10,5 +10,5 @@ public interface TradingService {
 
     BigDecimal buyStock(String symbol, int quantity);
 
-    StockDTO sellStock(String symbol, int quantity);
+    BigDecimal sellStock(String symbol, int quantity);
 }

@@ -87,7 +87,7 @@ public class BankClient {
             System.out.println("[0] Close the application.");
             System.out.println("[1] Search for stocks.");
             System.out.println("[2] Buy stocks.");
-            System.out.println("[3] Sell stocks."); // TODO: Need implementation
+            System.out.println("[3] Sell stocks.");
             System.out.println("[4] List Portfolio."); // TODO: Need implementation
 
             String input = sc.nextLine();
@@ -115,7 +115,16 @@ public class BankClient {
                     System.out.println("Purchased " + stockQuantity + " of stock " + stockNamePurchase + " for a value of " + purchaseValue +  " per stock.");
                     break;
                 case "3":
-                    throw new NotImplementedException();
+                    System.out.print("Enter a stock name:");
+                    String stockNameSelling = sc.nextLine();
+
+                    System.out.print("Enter a quantity to sell:");
+                    int stockQuantitySelling = Integer.parseInt(sc.nextLine());
+
+                    BigDecimal sellingValue = tradingService.sellStock(stockNameSelling, stockQuantitySelling);
+
+                    System.out.println("Sold " + stockQuantitySelling + " of stock " + stockNameSelling + " for a value of " + sellingValue +  " per stock.");
+                    break;
                 case "4":
                     throw new NotImplementedException();
                 default:

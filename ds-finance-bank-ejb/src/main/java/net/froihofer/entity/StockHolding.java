@@ -3,8 +3,6 @@ package net.froihofer.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.Date;
 
 @Entity
 @Table
@@ -21,9 +19,6 @@ public class StockHolding {
 
     @Column
     private int quantity;
-
-    @Column
-    private Instant purchaseDate;
 
     public String getSymbol() {
         return symbol;
@@ -47,13 +42,5 @@ public class StockHolding {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public Instant getPurchaseDate() {
-        return purchaseDate;
-    }
-
-    public void setPurchaseDate(Instant purchaseDate) {
-        this.purchaseDate = purchaseDate;
     }
 }

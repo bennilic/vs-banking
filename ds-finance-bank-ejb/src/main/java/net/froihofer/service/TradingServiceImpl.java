@@ -94,7 +94,6 @@ public class TradingServiceImpl implements TradingService {
             stockHolding.setSymbol(symbol);
             stockHolding.setQuantity(quantity);
             stockHolding.setPurchasePrice(purchaseValue);
-            stockHolding.setPurchaseDate(Instant.now());
 
             portfolio.addStockHolding(stockHolding);
             portfolioDAO.persist(portfolio);
@@ -113,7 +112,53 @@ public class TradingServiceImpl implements TradingService {
     }
 
     @Override
-    public StockDTO sellStock(String symbol, int quantity) {
-        throw new NotImplementedException();
+    @RolesAllowed("customer")
+    public BigDecimal sellStock(String symbol, int quantity) {
+        TradingWebService tradingWebService = tradingWebserviceProvider.getTradingWebService();
+
+        try {
+            Customer customer = sessionUtils.getLoggedInCustomer();
+
+            Portfolio portfolio = customer.getPortfolio();
+            List<StockHolding> stockHoldings = portfolio.getStockHoldings();
+
+            int totalStockQuantity = 0;
+            for (StockHolding stockHolding : stockHoldings) {
+                if (stockHolding.getSymbol().equals(symbol)) {
+                    totalStockQuantity += stockHolding.getQuantity();
+                }
+            }
+
+            if (totalStockQuantity < quantity) {
+                throw new RuntimeException("Not enough stocks to sell.");
+            }
+
+            int originalQuantity = quantity;
+            for (StockHolding stockHolding : stockHoldings){
+                int stockQuantity = stockHolding.getQuantity();
+
+                if (stockQuantity <= quantity){
+                    stockHolding.setQuantity(0);
+                    quantity = quantity - stockQuantity;
+                } else {
+                    stockHolding.setQuantity(stockQuantity - quantity);
+                    quantity = 0;
+                }
+            }
+
+            BigDecimal sellingValue = tradingWebService.sell(symbol, originalQuantity);
+            BigDecimal totalSellingValue = sellingValue.multiply(BigDecimal.valueOf(originalQuantity));
+
+            Bank bank = bankDAO.findById(1);
+            BigDecimal investibleVolume = bank.getInvestableVolume();
+
+            bank.setInvestableVolume(investibleVolume.add(totalSellingValue));
+
+            bankDAO.persist(bank);
+
+            return sellingValue;
+        } catch (TradingWSException_Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
