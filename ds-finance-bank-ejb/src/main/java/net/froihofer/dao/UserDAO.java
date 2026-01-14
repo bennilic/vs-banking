@@ -12,7 +12,7 @@ public class UserDAO {
 
     public List<Customer> findCustomerbyName(String name){
         String query = "SELECT c FROM Customer c WHERE (LOWER(c.firstName) LIKE LOWER(:name) OR LOWER(c.lastName) LIKE LOWER(:name))";
-        return entityManager.createQuery(query,Customer.class).setParameter("name","X" +name).getResultList();
+        return entityManager.createQuery(query,Customer.class).setParameter("name","%" +name + "%").getResultList();
     }
 
     public Customer findById(long id){

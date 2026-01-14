@@ -84,6 +84,7 @@ public class CustomerServiceImpl implements CustomerService {
            return Collections.emptyList();
        } else {
            List<CustomerDTO> customList = new ArrayList<>();
+
            results.forEach(custom -> {
                CustomerDTO customerDTO = getCustomer(custom);
                customList.add(customerDTO);

@@ -213,7 +213,7 @@ public class BankClient {
             case "1":
                 System.out.println("Customer Name: ");
                 String name = sc.nextLine();
-                findCustomerName(name);
+
             case "2":
                 System.out.println("Customer ID: ");
                 Scanner scid = new Scanner(System.in);
@@ -228,14 +228,6 @@ public class BankClient {
         }
     }
 
-    private void findCustomerName(String name) {
-      /*  List<CustomerDTO> searchResult = CustomerService.findCustomer(name);
-        if (searchResult.isEmpty()) {
-            System.out.println("No customers found with the name: " + name);
-        } else {
-          //  searchResult.forEach(BankClient::printCustomerDetails);
-        }*/
-    }
 
     private void findCustomerId(long id){
         try{
