@@ -17,7 +17,6 @@ import dto.PortfolioDTO;
 import dto.StockDTO;
 import net.froihofer.util.AuthCallbackHandler;
 import net.froihofer.util.WildflyJndiLookupHelper;
-import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,8 +42,8 @@ public class BankClient {
 //        AuthCallbackHandler.setUsername("default-c");
 //        AuthCallbackHandler.setPassword("super-secure");
 
-        AuthCallbackHandler.setUsername("default-e");
-        AuthCallbackHandler.setPassword("super-secure");
+//        AuthCallbackHandler.setUsername("default-e");
+//        AuthCallbackHandler.setPassword("super-secure");
 
         Properties props = new Properties();
         props.put(Context.SECURITY_PRINCIPAL, AuthCallbackHandler.getUsername());
@@ -66,6 +65,31 @@ public class BankClient {
     }
 
     private void run() {
+        System.out.println("Starting Bank Client...");
+        System.out.println("pieep, pop, püüp...");
+        System.out.println();
+        System.out.println("                o    .  o  .  o .  o  .  o  .");
+        System.out.println("           o");
+        System.out.println("        .");
+        System.out.println("      .        ___");
+        System.out.println("     _n_n_n____i_i ________ ______________ _++");
+        System.out.println("  *>(____________I I______I I____________I I___");
+        System.out.println("    /ooOOOO OOOOoo  oo oooo oo          oo ooo");
+        System.out.println("----------------------------------------------");
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Please enter you credentials to login.");
+        System.out.println("Username: ");
+        Scanner scanner = new Scanner(System.in);
+        String username = scanner.nextLine();
+
+        System.out.println("Password: ");
+        String password = scanner.nextLine();
+
+        AuthCallbackHandler.setUsername(username);
+        AuthCallbackHandler.setPassword(password);
+
         getRmiProxy();
 
         boolean isEmployee = customerService.isEmployee();
