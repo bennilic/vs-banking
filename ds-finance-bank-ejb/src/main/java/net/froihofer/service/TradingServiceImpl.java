@@ -8,6 +8,7 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import net.froihofer.dao.BankDAO;
 import net.froihofer.dao.PortfolioDAO;
+import net.froihofer.dao.UserDAO;
 import net.froihofer.dsfinance.ws.trading.api.PublicStockQuote;
 import net.froihofer.dsfinance.ws.trading.api.TradingWSException_Exception;
 import net.froihofer.dsfinance.ws.trading.api.TradingWebService;
@@ -17,12 +18,11 @@ import net.froihofer.entity.Portfolio;
 import net.froihofer.entity.StockHolding;
 import net.froihofer.util.SessionUtils;
 import net.froihofer.util.TradingWebserviceProvider;
-import org.apache.commons.lang3.NotImplementedException;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Remote
 @Stateless(name = "TradingService")
@@ -36,6 +36,9 @@ public class TradingServiceImpl implements TradingService {
 
     @Inject
     BankDAO bankDAO;
+
+    @Inject
+    UserDAO userDAO;
 
     @Inject
     SessionUtils sessionUtils;
@@ -68,15 +71,24 @@ public class TradingServiceImpl implements TradingService {
     }
 
     @Override
-    @RolesAllowed("customer")
-    public BigDecimal buyStock(String symbol, int quantity) {
+    @RolesAllowed({"customer", "employee"})
+    public BigDecimal buyStock(String symbol, int quantity, Long customerId) {
         TradingWebService tradingWebService = tradingWebserviceProvider.getTradingWebService();
 
         try {
             BigDecimal purchaseValue = tradingWebService.buy(symbol, quantity);
             BigDecimal totalPurchaseValue = purchaseValue.multiply(BigDecimal.valueOf(quantity));
 
-            Customer customer = sessionUtils.getLoggedInCustomer();
+            Customer customer;
+            if (sessionUtils.isEmployee()) {
+                if (customerId == null) {
+                    throw new RuntimeException("Customer ID is required for buying stocks.");
+                } else {
+                    customer = userDAO.findById(customerId);
+                }
+            } else {
+                customer = sessionUtils.getLoggedInCustomer();
+            }
 
             Portfolio portfolio = customer.getPortfolio();
 
@@ -102,14 +114,24 @@ public class TradingServiceImpl implements TradingService {
     }
 
     @Override
-    @RolesAllowed("customer")
-    public BigDecimal sellStock(String symbol, int quantity) {
+    @RolesAllowed({"customer", "employee"})
+    public BigDecimal sellStock(String symbol, int quantity, Long customerId) {
         TradingWebService tradingWebService = tradingWebserviceProvider.getTradingWebService();
 
         try {
-            Customer customer = sessionUtils.getLoggedInCustomer();
+            Customer customer;
+            if (sessionUtils.isEmployee()) {
+                if (customerId == null) {
+                    throw new RuntimeException("Customer ID is required for selling stocks.");
+                } else {
+                    customer = userDAO.findById(customerId);
+                }
+            } else {
+                customer = sessionUtils.getLoggedInCustomer();
+            }
 
             Portfolio portfolio = customer.getPortfolio();
+
             List<StockHolding> stockHoldings = portfolio.getStockHoldings();
 
             int totalStockQuantity = 0;
@@ -124,15 +146,19 @@ public class TradingServiceImpl implements TradingService {
             }
 
             int originalQuantity = quantity;
-            for (StockHolding stockHolding : stockHoldings){
-                int stockQuantity = stockHolding.getQuantity();
+            for (StockHolding stockHolding : stockHoldings) {
+                if (stockHolding.getSymbol().equals(symbol)){
+                    int stockQuantity = stockHolding.getQuantity();
 
-                if (stockQuantity <= quantity){
-                    stockHolding.setQuantity(0);
-                    quantity = quantity - stockQuantity;
-                } else {
-                    stockHolding.setQuantity(stockQuantity - quantity);
-                    quantity = 0;
+                    if (stockQuantity <= quantity) {
+                        stockHolding.setQuantity(0);
+                        quantity = quantity - stockQuantity;
+                    } else {
+                        stockHolding.setQuantity(stockQuantity - quantity);
+                        quantity = 0;
+                    }
+
+                    portfolioDAO.persist(stockHolding);
                 }
             }
 

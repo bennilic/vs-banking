@@ -39,11 +39,11 @@ public class BankClient {
      * Skeleton method for performing an RMI lookup
      */
     private void getRmiProxy() {
-        AuthCallbackHandler.setUsername("default-c");
-        AuthCallbackHandler.setPassword("super-secure");
-
-//        AuthCallbackHandler.setUsername("default-e");
+//        AuthCallbackHandler.setUsername("default-c");
 //        AuthCallbackHandler.setPassword("super-secure");
+
+        AuthCallbackHandler.setUsername("default-e");
+        AuthCallbackHandler.setPassword("super-secure");
 
         Properties props = new Properties();
         props.put(Context.SECURITY_PRINCIPAL, AuthCallbackHandler.getUsername());
@@ -110,9 +110,9 @@ public class BankClient {
                     System.out.print("Enter a quantity to buy:");
                     int stockQuantity = Integer.parseInt(sc.nextLine());
 
-                    BigDecimal purchaseValue = tradingService.buyStock(stockNamePurchase, stockQuantity);
+                    BigDecimal purchaseValue = tradingService.buyStock(stockNamePurchase, stockQuantity, null);
 
-                    System.out.println("Purchased " + stockQuantity + " of stock " + stockNamePurchase + " for a value of " + purchaseValue +  " per stock.");
+                    System.out.println("Purchased " + stockQuantity + " of stock " + stockNamePurchase + " for a value of " + purchaseValue + " per stock.");
                     break;
                 case "3":
                     System.out.print("Enter a stock name:");
@@ -121,9 +121,9 @@ public class BankClient {
                     System.out.print("Enter a quantity to sell:");
                     int stockQuantitySelling = Integer.parseInt(sc.nextLine());
 
-                    BigDecimal sellingValue = tradingService.sellStock(stockNameSelling, stockQuantitySelling);
+                    BigDecimal sellingValue = tradingService.sellStock(stockNameSelling, stockQuantitySelling, null);
 
-                    System.out.println("Sold " + stockQuantitySelling + " of stock " + stockNameSelling + " for a value of " + sellingValue +  " per stock.");
+                    System.out.println("Sold " + stockQuantitySelling + " of stock " + stockNameSelling + " for a value of " + sellingValue + " per stock.");
                     break;
                 case "4":
                     throw new NotImplementedException();
@@ -145,8 +145,8 @@ public class BankClient {
             System.out.println("[1] Search for stocks.");
             System.out.println("[2] Create a new customer.");
             System.out.println("[3] Show investable volume of the bank.");
-            System.out.println("[4] Buy stocks for Customer."); // TODO: Need implementation
-            System.out.println("[5] Sell stocks for Customer."); // TODO: Need implementation
+            System.out.println("[4] Buy stocks for Customer.");
+            System.out.println("[5] Sell stocks for Customer.");
             System.out.println("[6] Search for Customer."); // TODO: Need implementation
             System.out.println("[7] List Customer Portfolio."); // TODO: Need implementation
 
@@ -197,9 +197,33 @@ public class BankClient {
                     System.out.println("The investable volume of the bank is: " + investibleVolume);
                     break;
                 case "4":
-                    throw new NotImplementedException();
+                    System.out.print("Enter a stock name:");
+                    String stockNamePurchase = sc.nextLine();
+
+                    System.out.print("Enter a quantity to buy:");
+                    int stockQuantity = Integer.parseInt(sc.nextLine());
+
+                    System.out.print("Enter a customer id:");
+                    Long customerId = Long.parseLong(sc.nextLine());
+
+                    BigDecimal purchaseValue = tradingService.buyStock(stockNamePurchase, stockQuantity, customerId);
+
+                    System.out.println("Purchased " + stockQuantity + " of stock " + stockNamePurchase + " for a value of " + purchaseValue + " per stock.");
+                    break;
                 case "5":
-                    throw new NotImplementedException();
+                    System.out.print("Enter a stock name:");
+                    String stockNameSelling = sc.nextLine();
+
+                    System.out.print("Enter a quantity to sell:");
+                    int stockQuantitySelling = Integer.parseInt(sc.nextLine());
+
+                    System.out.print("Enter a customer id:");
+                    Long customerIdSelling = Long.parseLong(sc.nextLine());
+
+                    BigDecimal sellingValue = tradingService.sellStock(stockNameSelling, stockQuantitySelling, customerIdSelling);
+
+                    System.out.println("Sold " + stockQuantitySelling + " of stock " + stockNameSelling + " for a value of " + sellingValue + " per stock.");
+                    break;
                 case "6":
                     customerSearchMenu();
                     break;
@@ -220,14 +244,14 @@ public class BankClient {
         }
     }
 
-    private void customerSearchMenu(){
+    private void customerSearchMenu() {
         System.out.println("\n\n[0] - Return to previous Page");
         System.out.println("[1] - Search for Customer Name: ");
         System.out.println("[2] - Search for Customer by ID: ");
         Scanner sc = new Scanner(System.in);
         String select = sc.nextLine();
         System.out.println("Search for: ");
-        switch(select){
+        switch (select) {
             case "0":
                 break;
             case "1":
@@ -249,26 +273,27 @@ public class BankClient {
     }
 
 
-    private void findCustomerId(long id){
-        try{
+    private void findCustomerId(long id) {
+        try {
             CustomerDTO custom = customerService.findCustomer(id);
-            if(custom == null){
+            if (custom == null) {
                 errorCustomerId(id);
             } else {
                 System.out.println("Found: ");
                 System.out.println(showCustomerDetails(custom));
             }
 
-      }catch (Exception e) {
+        } catch (Exception e) {
             errorCustomerId(id);
         }
     }
 
-    private String showCustomerDetails(CustomerDTO customer){
+    private String showCustomerDetails(CustomerDTO customer) {
         String output = String.format("ID: %s, Username: %s, Lastname: %s, Firstname: %s", customer.getId(), customer.getUserName(), customer.getLastName(), customer.getFirstName());
         return output;
     }
-    private void errorCustomerId(long id){
+
+    private void errorCustomerId(long id) {
         System.err.println("Customer with ID: " + id + " not found.");
     }
 }
