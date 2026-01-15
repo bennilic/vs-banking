@@ -10,7 +10,7 @@ public interface CustomerService {
 
     CustomerDTO findCustomer(long customerId);
 
-    List<CustomerDTO> findCustomer(String query);
+    CustomerDTO findCustomer(String query);
 
     boolean isEmployee();
 }

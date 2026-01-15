@@ -160,8 +160,8 @@ public class BankClient {
             System.out.println("[3] Show investable volume of the bank.");
             System.out.println("[4] Buy stocks for Customer.");
             System.out.println("[5] Sell stocks for Customer.");
-            System.out.println("[6] Search for Customer."); // TODO: Need implementation
-            System.out.println("[7] List Customer Portfolio."); // TODO: Need implementation
+            System.out.println("[6] Search for Customer.");
+            System.out.println("[7] List Customer Portfolio.");
 
             String input = sc.nextLine();
 
@@ -285,6 +285,9 @@ public class BankClient {
                 System.out.println("Customer Name: ");
                 String name = sc.nextLine();
 
+                CustomerDTO customer = customerService.findCustomer(name);
+                System.out.println(showCustomerDetails(customer));
+                break;
             case "2":
                 System.out.println("Customer ID: ");
                 Scanner scid = new Scanner(System.in);

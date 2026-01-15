@@ -11,11 +11,6 @@ import net.froihofer.entity.Customer;
 import net.froihofer.entity.User;
 import net.froihofer.util.SessionUtils;
 import net.froihofer.util.jboss.WildflyAuthDBHelper;
-import org.apache.commons.lang3.NotImplementedException;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Remote
 @Stateless(name = "CustomerService")
@@ -78,19 +73,10 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @RolesAllowed("employee")
-    public List<CustomerDTO> findCustomer(String query) {
-       List<Customer> results = userDao.findCustomerbyName(query);
-       if(results.isEmpty()){
-           return Collections.emptyList();
-       } else {
-           List<CustomerDTO> customList = new ArrayList<>();
+    public CustomerDTO findCustomer(String username) {
+       Customer customer = userDao.getCustomerByUsername(username);
 
-           results.forEach(custom -> {
-               CustomerDTO customerDTO = getCustomer(custom);
-               customList.add(customerDTO);
-           });
-       }
-       throw new NotImplementedException();
+       return getCustomer(customer);
     }
 
 
