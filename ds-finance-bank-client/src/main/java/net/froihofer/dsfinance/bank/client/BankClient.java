@@ -13,6 +13,7 @@ import api.CustomerService;
 import api.PortfolioService;
 import api.TradingService;
 import dto.CustomerDTO;
+import dto.PortfolioDTO;
 import dto.StockDTO;
 import net.froihofer.util.AuthCallbackHandler;
 import net.froihofer.util.WildflyJndiLookupHelper;
@@ -88,7 +89,7 @@ public class BankClient {
             System.out.println("[1] Search for stocks.");
             System.out.println("[2] Buy stocks.");
             System.out.println("[3] Sell stocks.");
-            System.out.println("[4] List Portfolio."); // TODO: Need implementation
+            System.out.println("[4] List Portfolio.");
 
             String input = sc.nextLine();
 
@@ -126,7 +127,19 @@ public class BankClient {
                     System.out.println("Sold " + stockQuantitySelling + " of stock " + stockNameSelling + " for a value of " + sellingValue + " per stock.");
                     break;
                 case "4":
-                    throw new NotImplementedException();
+                    PortfolioDTO portfolioDTO = portfolioService.listPortfolio(null);
+
+                    System.out.println("Your Portfolio contains the following stocks:");
+
+                    BigDecimal totalValue = BigDecimal.ZERO;
+                    for (StockDTO stock : portfolioDTO.getStocks()) {
+                        System.out.println("Stock: " + stock.getSymbol() + ", Quantity: " + stock.getQuantity() + ", Purchase Price: " + stock.getPurchasePrice());
+                        totalValue = totalValue.add(stock.getPurchasePrice().multiply(BigDecimal.valueOf(stock.getQuantity())));
+                    }
+
+                    System.out.println("Total Portfolio Value: " + totalValue);
+
+                    break;
                 default:
                     System.out.println("Invalid option. Please try again.");
                     break;
@@ -228,7 +241,21 @@ public class BankClient {
                     customerSearchMenu();
                     break;
                 case "7":
-                    throw new NotImplementedException();
+                    System.out.print("Enter a customer id:");
+                    Long customerIdListPortfolio = Long.parseLong(sc.nextLine());
+
+                    PortfolioDTO portfolioDTO = portfolioService.listPortfolio(customerIdListPortfolio);
+
+                    System.out.println("Your Portfolio contains the following stocks:");
+
+                    BigDecimal totalValue = BigDecimal.ZERO;
+                    for (StockDTO stock : portfolioDTO.getStocks()) {
+                        System.out.println("Stock: " + stock.getSymbol() + ", Quantity: " + stock.getQuantity() + ", Purchase Price: " + stock.getPurchasePrice());
+                        totalValue = totalValue.add(stock.getPurchasePrice().multiply(BigDecimal.valueOf(stock.getQuantity())));
+                    }
+
+                    System.out.println("Total Portfolio Value: " + totalValue);
+                    break;
                 default:
                     System.out.println("Invalid option. Please try again.");
                     break;
