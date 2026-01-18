@@ -155,13 +155,16 @@ public class BankClient {
 
                     System.out.println("Your Portfolio contains the following stocks:");
 
-                    BigDecimal totalValue = BigDecimal.ZERO;
+                    BigDecimal totalPurchasePrice = BigDecimal.ZERO;
+                    BigDecimal totalCurrentPrice = BigDecimal.ZERO;
                     for (StockDTO stock : portfolioDTO.getStocks()) {
-                        System.out.println("Stock: " + stock.getSymbol() + ", Quantity: " + stock.getQuantity() + ", Purchase Price: " + stock.getPurchasePrice());
-                        totalValue = totalValue.add(stock.getPurchasePrice().multiply(BigDecimal.valueOf(stock.getQuantity())));
+                        System.out.println("Stock: " + stock.getSymbol() + ", Quantity: " + stock.getQuantity() + ", Purchase Price: " + stock.getPurchasePrice() + ", Current Price: " + stock.getCurrentPrice());
+                        totalPurchasePrice = totalPurchasePrice.add(stock.getPurchasePrice().multiply(BigDecimal.valueOf(stock.getQuantity())));
+                        totalCurrentPrice = totalCurrentPrice.add(stock.getCurrentPrice().multiply(BigDecimal.valueOf(stock.getQuantity())));
                     }
 
-                    System.out.println("Total Portfolio Value: " + totalValue);
+                    System.out.println("Total Purchase Price: " + totalPurchasePrice);
+                    System.out.println("Total Current Price: " + totalCurrentPrice);
 
                     break;
                 default:
@@ -272,13 +275,16 @@ public class BankClient {
 
                     System.out.println("Your Portfolio contains the following stocks:");
 
-                    BigDecimal totalValue = BigDecimal.ZERO;
+                    BigDecimal totalPurchasePrice = BigDecimal.ZERO;
+                    BigDecimal totalCurrentPrice = BigDecimal.ZERO;
                     for (StockDTO stock : portfolioDTO.getStocks()) {
-                        System.out.println("Stock: " + stock.getSymbol() + ", Quantity: " + stock.getQuantity() + ", Purchase Price: " + stock.getPurchasePrice());
-                        totalValue = totalValue.add(stock.getPurchasePrice().multiply(BigDecimal.valueOf(stock.getQuantity())));
+                        System.out.println("Stock: " + stock.getSymbol() + ", Quantity: " + stock.getQuantity() + ", Purchase Price: " + stock.getPurchasePrice() + ", Current Price: " + stock.getCurrentPrice());
+                        totalPurchasePrice = totalPurchasePrice.add(stock.getPurchasePrice().multiply(BigDecimal.valueOf(stock.getQuantity())));
+                        totalCurrentPrice = totalCurrentPrice.add(stock.getCurrentPrice().multiply(BigDecimal.valueOf(stock.getQuantity())));
                     }
 
-                    System.out.println("Total Portfolio Value: " + totalValue);
+                    System.out.println("Total Purchase Price: " + totalPurchasePrice);
+                    System.out.println("Total Current Price: " + totalCurrentPrice);
                     break;
                 default:
                     System.out.println("Invalid option. Please try again.");

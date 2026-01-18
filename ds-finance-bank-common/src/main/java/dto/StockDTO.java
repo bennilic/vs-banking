@@ -1,4 +1,6 @@
 package dto;
+import jakarta.persistence.Column;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -8,6 +10,8 @@ public class StockDTO implements Serializable {
     private BigDecimal purchasePrice;
 
     private int quantity;
+
+    private BigDecimal currentPrice;
 
     public StockDTO () {}
 
@@ -33,5 +37,13 @@ public class StockDTO implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public BigDecimal getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(BigDecimal currentPrice) {
+        this.currentPrice = currentPrice;
     }
 }
